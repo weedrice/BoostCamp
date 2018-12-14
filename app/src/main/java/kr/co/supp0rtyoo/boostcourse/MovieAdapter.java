@@ -111,8 +111,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public void setMovie(MovieItem movieItem) {
             movieTitle.setText(Html.fromHtml(movieItem.getTitle()));
             movieRating.setRating(movieItem.getUserRating());
-            //movieYear.setText(movieItem.getDate());
-            Log.d("movieAdatper: ", String.valueOf(movieItem.getDate()));
+            movieYear.setText(movieItem.getDate());
             movieDirector.setText(movieItem.getDirector());
             movieActor.setText(movieItem.getActor());
 

@@ -38,25 +38,20 @@ public class NetworkTask extends AsyncTask<String, Integer, MovieInfo> {
 
             switch(responseCode) {
                 case 400:
-                    Log.d(TAG, "400");
                     bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                     Log.d(TAG, bufferedReader.toString());
                     break;
                 case 404:
-                    Log.d(TAG, "404");
                     bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                     Log.d(TAG, bufferedReader.toString());
                     break;
                 case 500:
-                    Log.d(TAG, "500");
                     bufferedReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                     Log.d(TAG, bufferedReader.toString());
                     break;
                 case 200:
-                    Log.d(TAG, "200");
                     Gson gson = new Gson();
                     movieInfo = gson.fromJson(new BufferedReader(new InputStreamReader(connection.getInputStream())), MovieInfo.class);
-                    Log.d(TAG, movieInfo.getLastBuildDate());
                     break;
             }
 
@@ -70,7 +65,5 @@ public class NetworkTask extends AsyncTask<String, Integer, MovieInfo> {
     @Override
     protected void onPostExecute(MovieInfo movieInfo) {
         super.onPostExecute(movieInfo);
-
-        Log.d(TAG, "검색 시간: " + movieInfo.getLastBuildDate());
     }
 }

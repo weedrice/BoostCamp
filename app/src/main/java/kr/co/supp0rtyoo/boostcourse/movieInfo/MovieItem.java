@@ -7,7 +7,7 @@ public class MovieItem {
     private String link;
     private String image;
     private String subtitle;
-    private Date date;
+    private String pubDate;
     private String director;
     private String actor;
     private float userRating;
@@ -28,8 +28,8 @@ public class MovieItem {
         return subtitle;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return pubDate;
     }
 
     public String getDirector() {
