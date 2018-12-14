@@ -1,14 +1,16 @@
 package kr.co.supp0rtyoo.boostcourse.movieInfo;
 
-public class MovieItems {
-    String title;
-    String link;
-    String image;
-    String subtitle;
-    String date;
-    String director;
-    String actor;
-    int userRating;
+import java.util.Date;
+
+public class MovieItem {
+    private String title;
+    private String link;
+    private String image;
+    private String subtitle;
+    private Date date;
+    private String director;
+    private String actor;
+    private float userRating;
 
     public String getTitle() {
         return title;
@@ -26,7 +28,7 @@ public class MovieItems {
         return subtitle;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -38,7 +40,7 @@ public class MovieItems {
         return actor;
     }
 
-    public int getUserRating() {
+    public float getUserRating() {
         return userRating;
     }
 }
