@@ -4,17 +4,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import kr.co.supp0rtyoo.boostcourse.movieInfo.MovieInfo;
+import kr.co.supp0rtyoo.boostcourse.databinding.MovieContentsBinding;
 import kr.co.supp0rtyoo.boostcourse.movieInfo.MovieItem;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
@@ -33,18 +29,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @NonNull
     @Override
-    public MovieAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View movieView = layoutInflater.inflate(R.layout.movie_contents, viewGroup, false);
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
+        MovieContentsBinding binding = MovieContentsBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
 
-        return new MovieViewHolder(movieView);
+        return new MovieViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieAdapter.MovieViewHolder movieViewHolder, int i) {
-        MovieItem movieItem = movieItems.get(i);
-        movieViewHolder.setMovie(movieItem);
-
+    public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
+        MovieItem movieItem = movieItems.get(position);
+        movieViewHolder.bind(movieItem);
+        movieViewHolder.setImage(movieItem);
         movieViewHolder.setOnItemClickListener(listener);
     }
 
@@ -53,12 +48,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movieItems.size();
     }
 
-    public void addMovie(MovieItem movieInfo) {
+    public void setMovie(MovieItem movieInfo) {
         movieItems.add(movieInfo);
     }
 
-    public void addMovies(ArrayList<MovieItem> _movieInfos) {
+    public void setMovies(ArrayList<MovieItem> _movieInfos) {
+        if(_movieInfos == null) { return; }
         this.movieItems = _movieInfos;
+        notifyDataSetChanged();
     }
 
     public MovieItem getMovie(int position) {
@@ -74,20 +71,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     static public class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView movieImage;
-        TextView movieTitle;
-        RatingBar movieRating;
-        TextView movieYear;
-        TextView movieDirector;
-        TextView movieActor;
-
+        MovieContentsBinding binding;
         OnItemClickListener listener;
 
-        public MovieViewHolder(@NonNull View movieView) {
-            super(movieView);
-            setViews(movieView);
+        public MovieViewHolder(@NonNull MovieContentsBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
-            movieView.setOnClickListener(new View.OnClickListener() {
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
@@ -99,23 +90,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             });
         }
 
-        private void setViews(View itemView) {
-            this.movieImage = itemView.findViewById(R.id.movieImage);
-            this.movieTitle = itemView.findViewById(R.id.movieTitle);
-            this.movieRating = itemView.findViewById(R.id.movieRatingBar);
-            this.movieYear = itemView.findViewById(R.id.movieYear);
-            this.movieDirector = itemView.findViewById(R.id.movieDirector);
-            this.movieActor = itemView.findViewById(R.id.movieActors);
+        public void bind(MovieItem movieItem) {
+            binding.setMovieItem(movieItem);
+            binding.movieTitle.setText(Html.fromHtml(movieItem.getTitle()));
+            setImage(movieItem);
         }
 
-        public void setMovie(MovieItem movieItem) {
-            movieTitle.setText(Html.fromHtml(movieItem.getTitle()));
-            movieRating.setRating(movieItem.getUserRating());
-            movieYear.setText(movieItem.getDate());
-            movieDirector.setText(movieItem.getDirector());
-            movieActor.setText(movieItem.getActor());
-
-            ImageLoadTask imageLoadTask = new ImageLoadTask(movieItem.getImage(), movieImage);
+        public void setImage(MovieItem movieItem) {
+            ImageLoadTask imageLoadTask = new ImageLoadTask(movieItem.getImage(), binding.movieImage);
             imageLoadTask.execute();
         }
 

@@ -1,25 +1,23 @@
 package kr.co.supp0rtyoo.boostcourse;
 
 import android.content.Intent;
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import kr.co.supp0rtyoo.boostcourse.databinding.ActivityMainBinding;
 import kr.co.supp0rtyoo.boostcourse.movieInfo.MovieInfo;
 import kr.co.supp0rtyoo.boostcourse.movieInfo.MovieItem;
 
 public class MainActivity extends AppCompatActivity {
-    private Button searchBtn;
-    private EditText searchText;
-    private RecyclerView recyclerView;
+    private ActivityMainBinding binding;
 
     private MovieInfo movieInfo;
     private NetworkTask networkTask;
@@ -30,18 +28,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        init();
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        movieAdapter = new MovieAdapter(getApplicationContext());
+        movieInfo = new MovieInfo();
+        recyclerViewManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        binding.movieRecyclerView.setLayoutManager(recyclerViewManager);
+        binding.movieRecyclerView.setAdapter(movieAdapter);
+        binding.setMovieInfo(movieInfo);
         setOnCLickListener();
 
     }
 
+    @BindingAdapter("bind:item")
+    public static void bindItem(RecyclerView recyclerView, MovieInfo movieInfo) {
+        MovieAdapter adapter = (MovieAdapter)recyclerView.getAdapter();
+        if(adapter != null) {
+            adapter.setMovies(movieInfo.getItems());
+        }
+    }
+
     private void setOnCLickListener() {
-        searchBtn.setOnClickListener(new View.OnClickListener() {
+        binding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text = searchText.getText().toString();
+                String text = binding.searchText.getText().toString();
                 networkTask = new NetworkTask();
                 try {
                     movieInfo = networkTask.execute("*" + text + "*").get();
@@ -61,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setRecyclerView() {
         if(movieInfo.getItems().size() == 0) {
-            Toast toast = Toast.makeText(this, "'"+searchText.getText().toString()+"' 검색결과는 없습니다.",Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, "'"+binding.searchText.getText().toString()+"' 검색결과는 없습니다.",Toast.LENGTH_LONG);
             View viewToast = toast.getView();
 
             viewToast.setBackgroundResource(R.color.colorPrimary);
@@ -71,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
             toast.show();
         } else {
-            movieAdapter.addMovies(movieInfo.getItems());
+            movieAdapter.setMovies(movieInfo.getItems());
             setRecyclerListener();
 
-            recyclerView.setAdapter(movieAdapter);
+            binding.movieRecyclerView.setAdapter(movieAdapter);
         }
 
     }
@@ -88,15 +99,5 @@ public class MainActivity extends AppCompatActivity {
                 showUrl(url);
             }
         });
-    }
-
-    private void init() {
-        searchBtn = (Button)findViewById(R.id.searchBtn);
-        searchText = (EditText)findViewById(R.id.searchText);
-        recyclerView = (RecyclerView)findViewById(R.id.movieRecyclerView);
-        recyclerViewManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(recyclerViewManager);
-        movieAdapter = new MovieAdapter(getApplicationContext());
-        recyclerView.setAdapter(movieAdapter);
     }
 }

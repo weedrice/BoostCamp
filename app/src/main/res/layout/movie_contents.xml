@@ -1,78 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum = "10"
-    >
-
-    <ImageView
-        android:id="@+id/movieImage"
-        android:layout_width="wrap_content"
-        android:layout_height="130dp"
-        android:layout_weight="3"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        />
-
+<layout>
+    <data>
+        <variable
+            name="movieItem"
+            type="kr.co.supp0rtyoo.boostcourse.movieInfo.MovieItem" />
+    </data>
     <LinearLayout
-        android:layout_width="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
-        android:orientation="vertical"
-        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum = "10"
         >
 
-        <TextView
-            android:id="@+id/movieTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000"
-            android:text="영화 제목"
-            android:textSize="15dp"
+        <ImageView
+            android:id="@+id/movieImage"
+            android:layout_width="wrap_content"
+            android:layout_height="130dp"
+            android:layout_weight="3"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             />
 
-        <RatingBar
-            android:id="@+id/movieRatingBar"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:numStars="5"
-            android:stepSize="0.125"
-            android:isIndicator="true"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            />
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            >
 
-        <TextView
-            android:id="@+id/movieYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="개봉 연도"
-            android:textColor="#000"
-            />
+            <TextView
+                android:id="@+id/movieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="15dp"
+                />
 
-        <TextView
-            android:id="@+id/movieDirector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="#000"
-            android:text="감독"
-            />
+            <RatingBar
+                android:id="@+id/movieRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:numStars="5"
+                android:stepSize="0.125"
+                android:isIndicator="true"
+                android:rating="@{movieItem.userRating/2.0f}"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                />
 
-        <TextView
-            android:id="@+id/movieActors"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="#000"
-            android:text="출연진"
-            />
+            <TextView
+                android:id="@+id/movieYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{movieItem.date}"
+                android:textColor="#000"
+                />
+
+            <TextView
+                android:id="@+id/movieDirector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:text="@{movieItem.director}"
+                />
+
+            <TextView
+                android:id="@+id/movieActors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="#000"
+                android:text="@{movieItem.actor}"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>

@@ -12,6 +12,17 @@ public class MovieItem {
     private String actor;
     private float userRating;
 
+    public MovieItem(String title, String link, String image, String subtitle, String pubDate, String director, String actor, float userRating) {
+        this.title = title;
+        this.link = link;
+        this.image = image;
+        this.subtitle = subtitle;
+        this.pubDate = pubDate;
+        this.director = director;
+        this.actor = actor;
+        this.userRating = userRating;
+    }
+
     public String getTitle() {
         return title;
     }
