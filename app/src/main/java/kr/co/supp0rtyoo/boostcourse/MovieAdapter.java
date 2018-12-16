@@ -24,7 +24,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public interface OnItemClickListener {
-        public void onItemClick(MovieViewHolder holder, View view, int position);
+        void onItemClick(MovieViewHolder holder, View view, int position);
     }
 
     @NonNull
@@ -48,10 +48,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movieItems.size();
     }
 
-    public void setMovie(MovieItem movieInfo) {
-        movieItems.add(movieInfo);
-    }
-
     public void setMovies(ArrayList<MovieItem> _movieInfos) {
         if(_movieInfos == null) { return; }
         this.movieItems = _movieInfos;
@@ -60,10 +56,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     public MovieItem getMovie(int position) {
         return movieItems.get(position);
-    }
-
-    public ArrayList<MovieItem> getMovies() {
-        return this.movieItems;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
